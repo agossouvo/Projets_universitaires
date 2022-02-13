@@ -1,0 +1,50 @@
+NUM_MAG;COD_POST;REGION;ADRESSE;NUM;VILLE
+V1;29480;BRETAGNE;Rue des Martyrs;59;Pont L'Abbe
+V10;56350;BRETAGNE;Rue des lilas;44;Quiberon
+V11;56000;BRETAGNE;Rue Charlot;73;Vannes
+V12;22000;BRETAGNE;Rue Christophe Colomb;5;Saint Brieuc
+V13;35400;BRETAGNE;Avenue Henri IV;82;Saint Malo
+V14;17200;POITOU-CHARENTES;Rue Nationale;59;Royan
+V15;33680;AQUITAINE;Grand Rue;8;Lacanau
+V16;35400;BRETAGNE;Place de la mairie;75;Saint Malo
+V17;22000;BRETAGNE;Place du marche;3;Saint Brieuc
+V18;17000;POITOU-CHARENTES;Rue des anciennes halles;18;La Rochelle
+V19;33950;AQUITAINE;Place de l'Eglise;52;Cap Ferret
+V2;64000;PAYS BASQUE;Rue des rosiers;44;Biarritz
+V20;44500;PAYS DE LOIRE;Place Charlemagne;1;La Baule
+V21;17200;POITOU-CHARENTES;Rue du theatre moderne;86;Royan
+V22;40130;AQUITAINE;Place de l'ancienne comedie;16;Cap Breton
+V23;44420;PAYS DE LOIRE;Rue de l'opera;28;La Turballe
+V24;17200;POITOU-CHARENTES;Square Mirabeau;15;Royan
+V25;56350;BRETAGNE;Rue des revoltes;19;Quiberon
+V26;56000;BRETAGNE;Place de la cathedrale;86;Vannes
+V27;44420;PAYS DE LOIRE;Bd Pierre Mendes France;56;La Turballe
+V28;33950;AQUITAINE;Avenue des armees;5;Cap Ferret
+V29;56350;BRETAGNE;Square Monet;9;Quiberon
+V3;56350;BRETAGNE;Rue des tonneaux;7;Quiberon
+V30;35400;BRETAGNE;Rue des faux monnayeurs;2;Saint Malo
+V31;17000;POITOU-CHARENTES;Rue des compagnons;15;La Rochelle
+V32;56000;BRETAGNE;Rue de Paris;7;Vannes
+V33;33950;AQUITAINE;Avenue de la gare;3;Cap Ferret
+V34;40130;AQUITAINE;Rue Marco Polo;10;Cap Breton
+V35;22000;BRETAGNE;Avenue du chateau;18;Saint Brieuc
+V36;29480;BRETAGNE;Rue de la liberte;20;Pont L'Abbe
+V37;44420;PAYS DE LOIRE;Rue du paradis;28;La Turballe
+V38;44500;PAYS DE LOIRE;Avenue des feuilles mortes;8;La Baule
+V39;17000;POITOU-CHARENTES;Allee de la foret noire;8;La Rochelle
+V4;17000;POITOU-CHARENTES;Avenue de la plage;65;La Rochelle
+V40;56000;BRETAGNE;Rue principale;71;Vannes
+V41;33950;AQUITAINE;Halle au marche;3;Cap Ferret
+V42;44500;PAYS DE LOIRE;Rue du ruisseau;25;La Baule
+V43;33680;AQUITAINE;Bd du sud;2;Lacanau
+V44;17200;POITOU-CHARENTES;Place du soleil;36;Royan
+V45;40130;AQUITAINE;Bd du stade;58;Cap Breton
+V46;44420;PAYS DE LOIRE;Parc de la tete d'or;54;La Turballe
+V47;64000;PAYS BASQUE;Rue Jussieu;12;Biarritz
+V48;17000;POITOU-CHARENTES;Avenue de l'universite;15;La Rochelle
+V49;33950;AQUITAINE;Rue des gones;5;Cap Ferret
+V5;17200;POITOU-CHARENTES;Allee des peupliers;75;Royan
+V6;35400;BRETAGNE;Bd des capucines;6;Saint Malo
+V7;64000;PAYS BASQUE;Avenue de la gare;83;Biarritz
+V8;35400;BRETAGNE;Avenue Gambetta;78;Saint Malo
+V9;17000;POITOU-CHARENTES;Rue Gay-Lussac;2;La Rochelle
