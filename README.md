@@ -1,0 +1,2 @@
+# Projets_universitaires
+Lors de mon cursus à l'université Gustave eiffel pour une licence professionnelle, j'ai réalisé un certain nombre de  projets dans la veinde de l'analyse de données. notamment avec Python et R, Sql Server dans l'unique but de m'approprier les outils et de développer les compétences nécessaires à l'exercice de mon Métier. ces projet sm'ont permis de comprendre les enjeux face à la data et m'ont préparé à faire face dans le monde professionnelle aux panoplies de résolutions pertinentes
