@@ -1,0 +1,264 @@
+---
+title: "RENDU-PROJET CLASSIFICATION"
+author: "Bernice AGOSSOUVO"
+date: "17/06/2021"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Chargement des bibliothèques utiles dans le cadre de ce projet
+
+```{r}
+## Chargement des biblioteques
+library(readr)
+library(ggplot2)        
+library(readxl)
+library(prettyR)
+library(questionr)
+library(randomForest)
+```
+
+## 1) Chargement du jeu de données d'apprentissage 
+
+```{r}
+algue = read.table(file = "Ex4.dataTrain.txt",header = TRUE)
+
+```
+
+### Description statistique des variables 
+
+```{r}
+summary(algue)
+```
+
+```{r}
+describe(algue)
+attach(algue) 
+```
+
+Nous avons 11 variables dont 03 variables qualitatives ( season, size et speed) à respectivement 04, 03 et 03 modalités  et 08 variables quantitatives dont la variable freq
+
+
+### Transformation de la variable freq en facteur
+
+```{r}
+algue$freq <- as.factor(algue$freq)
+summary(algue)
+```
+
+## 2) Chargement du package RandomForest 
+
+```{r}
+library(randomForest)
+help("randomForest")
+```
+
+randomForest met en œuvre l'algorithme de forêt aléatoire de Breiman (basé sur le code Fortran original de Breiman et Cutler) pour la classification et la régression. Il peut également être utilisé en mode non supervisé pour évaluer les proximités entre les points de données.
+les codes suivants montrent l'utilisation de ce package
+
+## 3) Construire l'objet fit à l'aide de la commande randomForest en spécifiant importance = T
+```{r}
+fit.rf <- randomForest(freq ~ ., data = algue, importance =TRUE)
+print(fit.rf) # affiche l'objet crée
+
+```
+
+### Explication de la sortie 
+On voit d'abord un rappel de la formule utilisée 
+
+Après s'ensuit  le type of random forest : Classification (puisque notre variable à expliquer est de type qualitative)
+
+On apprend après que la forêt est composée de 500 arbres, qu'à chaque noeud l'algorithme fait un essai sur 3 variables, le taux d'erreur (out of bag error OOB qui est une mesure de l’erreur de prédiction) est donné
+ 
+en effet “Chaque arbre de la forêt est construit sur une fraction (“in bag”) des données (c’est la fraction qui sert à l’entraînement de l’algorithme. Alors pour chacun des individus de la fraction restante (“out of bag”) l’arbre peut prédire une classe.”  Le but du jeu est d’obtenir l’OOB le plus petit possible
+
+et pour finir, nous avons **la matrice de confusion**
+
+On trouve sur la diagonale (58 et 60) le nombre d’individus bien classé c’est-à-dire les individus dont la prédiction de l’algorithme correspond aux données observées. Les autres valeurs (10 et 6) correspondent aux individus mal classés par l’algorithme. Ainsi il y a 10 cours d'eau dont le seuil de prolifération ne nécéssite pas une action qui sont classés comme nécessitant une action par notre modèle et 06 dont le seuil nécéssite une action mais classés comme n'en nécéssitant pas.
+
+De ces valeurs sont calculé les class.error ou pourcentages de mal classé que l’on calcul simplement (par exemple 10/(5+10) pour le 0.1470).
+
+Aussi **l'err OOB** est égale à  **(la somme des valeurs sur la diagonale) / (le total des enregistrements)**
+
+
+
+## 4) Graphique montrant comment réduit l’OOB en fonction du nombre d’arbres générés.
+```{r}
+plot(fit.rf$err.rate[,1], 
+     type = "l", 
+     main = "Random forest: impact of the number of trees",
+     xlab = "Number of trees in the forest", 
+     ylab = "Misclassification error rate")
+```
+
+On cherche le nombre d'arbres qui stabilise l'OOB au minimum. On va voir ce que cela donnerait avec 2000 arbres
+
+```{r}
+set.seed(123)
+fit <- randomForest(freq ~., data = algue, ntree = 2000)
+print(fit)
+```
+
+
+```{r}
+plot(fit$err.rate[, 1], type = "l", xlab = "nombre d'arbres", ylab = "erreur OOB")
+```
+
+## 5) 
+
+```{r}
+fit.rf$oob.times
+```
+
+la fonction **fit.rf$oob.times* renvoie le nombre de fois où chaque individu est "out of bag"
+
+
+### Histogramme des OOB
+
+```{r}
+hist(fit.rf$oob.times,col = "green")
+```
+
+
+et on peut aussi s'intéresser à la proportion de votes que chaque classe a recueilli avec **fit.rf$votes**
+
+```{r}
+fit.rf$votes[1:10,]
+```
+
+Ici, on voit que le premier individu a été classé en 0 dans 88% des cas où il était « OOB », et 11,93% des fois en 1.
+
+
+
+
+
+## 6) Analyser l'importance des variables explicatives 
+
+Quelles sont les variables qui figurent dans notre modèle et discriminant le mieux la variable à expliquer ? 
+On peut faire un premier graphique qui va nous présenter l’importance des variables explicatives pour distinguer les cours d'eaux dont le seuil de prolifération  d'algues toxiques nécéssitant une cation est atteint.
+
+
+
+```{r}
+varImpPlot(fit.rf)
+```
+
+On trouve les mêmes informations dans un tableau avec les commandes suivantes :
+
+```{r}
+fit.rf$importance[order(fit.rf$importance[, 1], decreasing = TRUE), ]
+```
+Dans le modèle calculé, les trois variables ayant une forte importance sont NH4,oPO4 et Cl
+
+On peut visualiser graphiquement le comportement de chaque variable avec la variable freq
+
+### Variable NH4
+
+```{r}
+par(mfrow = c(1, 3))
+hist(algue$NH4[algue$freq == 0], main = "FREQ = 0", xlab ="NH4", col = "green")
+hist(algue$NH4[algue$freq == 1], main = "FREQ = 1",xlab ="NH4", col = "red")
+boxplot(NH4~ freq,varwidth = FALSE, col="#FFFACD")
+```
+
+
+On remarque ainsi que le **NH4** est **très present** dans les cours d'eau à forte prolifération des algues toxiques avec un maximum de 25000 alors que pour les cours d'eau dont la freq est 0, le maximum est à 250. la même remarque est faite sur les variables Cl et opo4. ci dessous la representation graphique 
+
+### Variable Cl
+
+```{r}
+par(mfrow = c(1, 3))
+hist(algue$Cl[algue$freq == 0], main = "FREQ = 0", xlab ="Cl", col = "yellow")
+hist(algue$Cl[algue$freq == 1], main = "FREQ = 1",xlab ="Cl", col = "yellow")
+boxplot(Cl~ freq,varwidth = FALSE, col="#FFFACD")
+```
+ Il n'y a pas de chevauchement au niveau des boites à moustaches. la moyenne de cl dans les cours d'eau quand freq est 0 ou freq est égale à 1 sont très differentes. Cela s'explique par le fait qu'il est aussi importante dans la modélisation
+ 
+### Variable oPO4
+
+
+```{r}
+par(mfrow = c(1, 3))
+hist(algue$oPO4[algue$freq == 0], main = "FREQ = 0", xlab ="oPO4", col = "blue")
+hist(algue$oPO4[algue$freq == 1], main = "FREQ = 1",xlab ="oPO4", col = "yellow")
+boxplot(oPO4~ freq,varwidth = FALSE, col="#FFFACD")
+```
+
+
+Même remarque que précedemment
+
+## 7) Calculez le taux d'erreur d'apprentissage 
+
+```{r}
+
+```
+ 
+ 
+## 8) Prédire pour le jeu de donnée test
+
+```{r}
+test = read.table(file = "Ex4.dataTest.txt",header = TRUE)
+```
+
+
+```{r}
+test$predicted <- predict(fit.rf, test)
+table(test$predicted)
+```
+L'agorithme prédit que 26 Cours d'eau nécessitent de traitement et que 26 n'en nécessitent pas 
+
+
+
+## 9)Changer la valeur de mtry pour construire un modèle Bagging et faites une prédiction pour le jeu de donnée test.
+
+```{r}
+library(ipred)
+```
+
+```{r}
+bag <- bagging(freq ~., data=algue, coob=TRUE)
+print(bag)
+```
+```{r}
+test$predicted2 <- predict(bag, test)
+table(test$predicted2)
+```
+
+
+
+
+
+## 10) Proposer une procédure afin de sélectionner le meilleur mtry au sens de la minimisation du taux d’erreur OOB.
+
+```{r}
+v.err <-  NULL
+v.mtry <- c(1, 2,3, 4, 5, 6, 7, 8,9)
+for(i in v.mtry){
+    set.seed(123)
+    fit.rf <- randomForest(freq~., data = algue, ntree= 2000, mtry=i)
+    v.err <- c(v.err, fit.rf$err.rate[2000,1])
+}
+```
+
+```{r}
+v.err
+```
+
+```{r}
+plot(v.mtry, v.err, type ="b", xlab="mtry values", ylab="taux d'erreur", xaxt="n")
+axis(1, at=v.mtry, labels=v.mtry, las=2)
+```
+
+```{r}
+fit.rf <- randomForest(freq ~ ., data = algue,mtry = 4, ntree =2000, importance =TRUE)
+print(fit.rf)
+```
+
+
