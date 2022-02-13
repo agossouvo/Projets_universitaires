@@ -11,7 +11,7 @@ library(ggpubr)
 library(cluster)
 library(doBy)
 
-## 1) Chargement de jeu de Données 
+## 1) Chargement de jeu de DonnÃ©es 
 
 BDD <- read.csv("C:/Users/berni/Desktop/cours_Eiffel/Cours S3/travaux pratiques/BDD.csv", row.names=1, sep=";")
 
@@ -57,9 +57,9 @@ fviz_eig(res_pca, geom = c("line"),linecolor = "blue",addlabels = TRUE, ylim = c
 var <- get_pca_var(res_pca)
 var
 
-#### Coordonnées 
+#### CoordonnÃ©es 
 head(var$coord)
-#### Cos2: qualité de répresentation
+#### Cos2: qualitÃ© de rÃ©presentation
 head(var$cos2)
 #### Contributions aux composantes principales
 cos = head(var$contrib)
@@ -74,28 +74,28 @@ corrplot(var$cos2,is.corr=FALSE)
 #### Sur les axes 1 et 2
 fviz_pca_var(res_pca, col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-             repel = TRUE # Évite le chevauchement de texte
+             repel = TRUE # Ã‰vite le chevauchement de texte
 )
 
 
 ### Sur les axes 1 et 3
 fviz_pca_var(res_pca, axes = c(1,3), col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-             repel = TRUE # Évite le chevauchement de texte
+             repel = TRUE # Ã‰vite le chevauchement de texte
 )
 
-### Qualité de représentation des individus
+### QualitÃ© de reprÃ©sentation des individus
 
 #### Sur les axes 1 et 2
 fviz_pca_ind (res_pca, col.ind = "cos2",
               gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-              repel = TRUE # Évite le chevauchement de texte
+              repel = TRUE # Ã‰vite le chevauchement de texte
 )
 
 #### Sur les axes 1 et 3
 fviz_pca_ind (res_pca,axes = c(1,3), col.ind = "cos2",
               gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-              repel = TRUE # Évite le chevauchement de texte
+              repel = TRUE # Ã‰vite le chevauchement de texte
 )
 
 ### Contribution 
@@ -109,7 +109,7 @@ fviz_contrib(res_pca, choice = "ind", axes = 2:3)
 
 fviz_pca_biplot (res_pca,
               gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-              repel = TRUE # Évite le chevauchement de texte
+              repel = TRUE # Ã‰vite le chevauchement de texte
 )
 
 
@@ -119,7 +119,7 @@ fviz_pca_biplot (res_pca,
 
 ### fviz_pca_ind (respca,axes = 2:3,
       ###        gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
- ##             repel = TRUE # Évite le chevauchement de texte)####
+ ##             repel = TRUE # Ã‰vite le chevauchement de texte)####
 
 
 
@@ -135,7 +135,7 @@ fviz_pca_biplot (res_pca,
 set.seed(123) # garde la classification fixe
 res.km <- kmeans(scale(BDD),4, nstart = 25)
 res.km
-## Ajout de la variable res.km$cluster dans le jeu de données.
+## Ajout de la variable res.km$cluster dans le jeu de donnÃ©es.
 BDD_NEW=cbind(BDD,res.km$cluster) #ajout la variable res.km$cluster
 View(BDD_NEW)
 
@@ -147,9 +147,9 @@ attach(BDD_NEW)
 
 # Clustering K-means montrant le groupe de chaque individu
 res.km$cluster # repartition des observations dans la parties
-res.km$size # répartition des données dans chaque classe
-res.km$centers #coordonnées des centres de classes( qui sont aussi les moyennes dans chaque classe pour une variables
-res.km$withinss # somme des carrées des ecart intra classes pour chaque classe
+res.km$size # rÃ©partition des donnÃ©es dans chaque classe
+res.km$centers #coordonnÃ©es des centres de classes( qui sont aussi les moyennes dans chaque classe pour une variables
+res.km$withinss # somme des carrÃ©es des ecart intra classes pour chaque classe
 
 # sum(res.km$withinss/51)
 # res.km$tot.withinss
@@ -163,7 +163,7 @@ apply(BDD, 2, mean)
 summaryBy(T+TM+Tm+PP+V+RA+SN+TS+FG ~ BDD_NEW$Kmean, data=BDD_NEW, FUN=sd)  # ecart-type
 apply(BDD, 2, sd)
 
-# graphique schématisant l'affectation dans chaque classe
+# graphique schÃ©matisant l'affectation dans chaque classe
 
 fviz_cluster(res.km, data = BDD,
              palette = c("#2E9FDF", "#42ff33", "#E7B800","#ff6833"), 
@@ -172,7 +172,7 @@ fviz_cluster(res.km, data = BDD,
              ellipse.type = "convex", 
              ggtheme = theme_bw()
 )
-# AUtre méthode pour la moyenne
+# AUtre mÃ©thode pour la moyenne
 meanClass <- aggregate(scale(BDD[ , 1: 9]),
                        by = list(res.km$cluster),
                        FUN = mean)
@@ -200,12 +200,12 @@ reponse <- scale(BDD)
 #matrice des distances entre individus
 d_reponse<- dist(reponse)
 
-#### Dendogramme de CAH par la méthode Ward avec la fontion hclust
+#### Dendogramme de CAH par la mÃ©thode Ward avec la fontion hclust
 
 cah.ward <- hclust(d_reponse,method="ward")
 plot(cah.ward)
 
-#Schémas Dendrogramme 
+#SchÃ©mas Dendrogramme 
 cah.ward_Den <- as.dendrogram(cah.ward)
 plot(cah.ward_Den)
 cah.ward_Den <- color_branches(cah.ward_Den, k = 2) 
@@ -216,7 +216,7 @@ plot(cah.ward_Den)
 
 
 
-# Découpage du dendogramme, A quel niveau le coupons nous ?
+# DÃ©coupage du dendogramme, A quel niveau le coupons nous ?
 inertie <- sort(cah.ward$height, decreasing = TRUE)
 inertie
 plot(inertie[1:20], type = "s", xlab = "Nombre de classes", ylab = "Inertie")
@@ -224,14 +224,14 @@ points(c(2, 3, 4,5), inertie[c(2, 3, 4,5)], col = c("green", "red", "blue", "yel
 abline(v=c(2, 3, 4,5),col=c("green", "red", "blue", "yellow"))
 
 
-#dendrogramme avec matérialisation des groupes de 3 à 6
+#dendrogramme avec matÃ©rialisation des groupes de 3 Ã  6
 plot(cah.ward, main = "Partition en 2, 3,4 ou 5 classes", xlab = "", ylab = "", sub = "", axes = FALSE)
 rect.hclust(cah.ward,2, border ="green")
 rect.hclust(cah.ward,3, border = "red")
 rect.hclust(cah.ward,4, border = "blue")
 rect.hclust(cah.ward,5, border = "yellow")
 
-#La fonction best.cutree permet de déterminer le nombre de classes optimal(la perte d'inertie est minimale)
+#La fonction best.cutree permet de dÃ©terminer le nombre de classes optimal(la perte d'inertie est minimale)
 
 best.cutree <- function(hc, min=3, max=20, loss=FALSE, graph=FALSE, ...){
   if (class(hc)!="hclust") hc <- as.hclust(hc)
@@ -256,17 +256,17 @@ best.cutree <- function(hc, min=3, max=20, loss=FALSE, graph=FALSE, ...){
       best + min - 1
   }
 }
-## On applique best.cutree à cah.ward en affichant la liste des inerties
+## On applique best.cutree Ã  cah.ward en affichant la liste des inerties
 best.cutree(cah.ward)
 
 # graphique des pertes d'inerties 
 best.cutree(cah.ward,graph =TRUE,xlab= "Nombres de classes", ylab = "Inertie relative")
 
-#découpage en 3 groupes
+#dÃ©coupage en 3 groupes
 Kclust <- cutree(cah.ward,k=2)
 table(res.km$cluster)
 
-# ajout de la variable Kclust au jeu de données
+# ajout de la variable Kclust au jeu de donnÃ©es
 BDD_NEW = cbind(BDD_NEW,Kclust)
 # Calcul des moyennes et ecart-types par cluster
 summaryBy(T+TM+Tm+PP+V+RA+SN+TS+FG ~ BDD_NEW$Kclust, data=BDD_NEW, FUN=mean) # moyennes
@@ -310,7 +310,7 @@ fviz_cluster(res.hcpc,
              main = "Factor map"
 )
 
-# Caractérisation des groupes 
+# CaractÃ©risation des groupes 
 
 BDD_NEW = cbind(BDD_NEW,HCPC)
 table(HCPC) 
